@@ -2,7 +2,7 @@
 
 ## Installation
 
-`npm install react-fire-state`
+`npm install react-state-fire`
 
 ## Usage
 

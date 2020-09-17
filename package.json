@@ -43,14 +43,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Johannesklint/react-fire-state.git"
+    "url": "git+https://github.com/Johannesklint/react-state-fire.git"
   },
   "author": "Johannes Klint",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Johannesklint/react-fire-state/issues"
+    "url": "https://github.com/Johannesklint/react-state-fire/issues"
   },
-  "homepage": "https://github.com/Johannesklint/react-fire-state#readme",
+  "homepage": "https://github.com/Johannesklint/react-state-fire#readme",
   "prettier": {
     "semi": false,
     "singleQuote": true
