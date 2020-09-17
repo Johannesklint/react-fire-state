@@ -1,0 +1,58 @@
+{
+  "name": "tehc",
+  "version": "1.2.3",
+  "description": "React state management",
+  "main": "dist/index.js",
+  "source": "src/index.js",
+  "module": "dist/index.module.js",
+  "unpkg": "dist/index.umd.js",
+  "keywords": [
+    "react",
+    "state management",
+    "state"
+  ],
+  "scripts": {
+    "test": "jest",
+    "lint": "eslint src/**/**/*.js",
+    "build": "microbundle --jsx React.createElement --external react",
+    "dev": "microbundle watch"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.10.5",
+    "@babel/core": "^7.11.4",
+    "@babel/plugin-transform-runtime": "^7.11.0",
+    "@babel/preset-env": "^7.11.0",
+    "@babel/preset-react": "^7.10.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^10.4.9",
+    "babel-eslint": "^10.1.0",
+    "babel-jest": "^26.3.0",
+    "eslint": "^7.7.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "eslint-plugin-react": "^7.20.6",
+    "eslint-plugin-react-hooks": "^4.1.0",
+    "jest": "^26.4.2",
+    "microbundle": "^0.12.3",
+    "prettier": "^2.1.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
+  "peerDependencies": {
+    "react": ">=16.8.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Johannesklint/tehc.git"
+  },
+  "author": "Johannes Klint",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Johannesklint/tehc/issues"
+  },
+  "homepage": "https://github.com/Johannesklint/tehc#readme",
+  "prettier": {
+    "semi": false,
+    "singleQuote": true
+  }
+}
