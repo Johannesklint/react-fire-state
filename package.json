@@ -1,6 +1,6 @@
 {
   "name": "react-state-fire",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React state management",
   "main": "dist/index.js",
   "source": "src/index.js",
