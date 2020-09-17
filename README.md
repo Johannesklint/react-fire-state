@@ -35,6 +35,7 @@ function SecondCounter() {
     </div>
   )
 }
+
 export default function App() {
   return (
     <div>
