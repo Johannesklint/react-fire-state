@@ -1,5 +1,5 @@
 {
-  "name": "tehc",
+  "name": "react-state-fire",
   "version": "1.0.0",
   "description": "React state management",
   "main": "dist/index.js",
@@ -43,14 +43,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Johannesklint/tehc.git"
+    "url": "git+https://github.com/Johannesklint/react-fire-state.git"
   },
   "author": "Johannes Klint",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Johannesklint/tehc/issues"
+    "url": "https://github.com/Johannesklint/react-fire-state/issues"
   },
-  "homepage": "https://github.com/Johannesklint/tehc#readme",
+  "homepage": "https://github.com/Johannesklint/react-fire-state#readme",
   "prettier": {
     "semi": false,
     "singleQuote": true
