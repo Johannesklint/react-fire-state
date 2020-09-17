@@ -1,112 +1,48 @@
 # tehc
 
-Another state management library? - Yes, why not? Do we need this library? I think not but here you are anyway! 😁
-
 ## Installation
 
-`npm install tehc`
+`npm install react-fire-state`
 
 ## Usage
 
-```jsx
-import { TehcProvider, useTehc } from 'tehc'
-
-// state will be 'some-state' at first render
-// once clicking on the button in `Updater`
-// it will be updated to 'updated-state'
-function Reader() {
-  const [state] = useTehc()
-  return <p>{state}</p>
-}
-
-// first argument is the current state
-// it will change from 'some-state' to 'update-state' on the button click
-function Updater() {
-  const [_, dispatch] = useTehc()
-  return <button onClick={() => dispatch('updated-state')}>Update</button>
-}
-
-function App() {
-  return (
-    <TehcProvider store={{ state: 'some-state' }}>
-      <Reader />
-      <Updater />
-    </TehcProvider>
-  )
-}
-```
-
-You have the possibility to read previous state much like `useState` callback function
+There is no need to pass an inital store to the `Provider` just add whatever you want with `fire` - it let's you add a new state instance whenver you want.
+It works a little bit like [Recoil](https://github.com/facebookexperimental/Recoil) but its not as fancy
 
 ```jsx
-function Comp() {
-  const [state, dispatch] = useTehc()
-  return (
-    <button
-      onClick={() => {
-        // read previous state
-        dispatch((prev) => prev + 1)
-      }
-    >
-      Click me!
-    </button>
-  )
-}
-```
+import { fire, useFire, Provider } from 'react-state-fire'
 
-You can also pass a custom reducer to `TehcProvider`
-
-```jsx
-import { TehcProvider, useTehc } from 'tehc'
-
-// state.count will be 0 on first render
-// clicking increment and decrement will update state.count to -1 or +1
-function Counter() {
-  const [state, dispatch] = useTehc(0)
+const store = fire(0)
+function FirstCounter() {
+  const [count, setCount] = useFire(store)
   return (
     <div>
-      <p>{state.count}</p>
-      <button onClick={() => dispatch({ type: 'increment' })}>increment</button>
-      <button onClick={() => dispatch({ type: 'decrement' })}>decrement</button>
+      <h1>First counter</h1>
+      {count}
+      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
     </div>
   )
 }
-function App() {
-  function reducer(state, action) {
-    switch (action.type) {
-      case 'increment':
-        return { count: state.count + 1 }
-      case 'decrement':
-        return { count: state.count - 1 }
-      default:
-        throw new Error('Noo!')
-    }
-  }
-  return (
-    <TehcProvider store={{ state: { count: 0 }, reducer }}>
-      <Counter />
-    </TehcProvider>
-  )
-}
-```
 
-If you prefer use the HOC
-
-```jsx
-const ComponentHoc = TehcHoc(({ state, dispatch }) => {
+const store2 = fire(1337)
+function SecondCounter() {
+  const [count, setCount] = useFire(store2)
   return (
     <div>
-      {state}
-      <button onClick={() => dispatch('Hey!')}>Ok!</button>
+      <h1>Second counter</h1>
+      {count}
+      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
     </div>
   )
-})
-
-function App() {
+}
+export default function App() {
   return (
-    <TehcProvider store={{ state: 'some-state' }}>
-      <ComponentHoc />
-    </TehcProvider>
+    <div>
+      <Provider>
+        <FirstCounter />
+        <SecondCounter />
+      </Provider>
+    </div>
   )
 }
 ```
