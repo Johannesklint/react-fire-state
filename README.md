@@ -36,12 +36,24 @@ function SecondCounter() {
   )
 }
 
+function Reader() {
+  const [firstCount] = useFire(store)
+  const [secondCount] = useFire(store2)
+  return (
+    <div>
+      <p>{firstCount}</p>
+      <p>{secondCount}</p>
+    </div>
+  )
+}
+
 export default function App() {
   return (
     <div>
       <Provider>
         <FirstCounter />
         <SecondCounter />
+        <Reader />
       </Provider>
     </div>
   )
