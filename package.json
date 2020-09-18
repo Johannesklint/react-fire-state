@@ -54,5 +54,8 @@
   "prettier": {
     "semi": false,
     "singleQuote": true
+  },
+  "dependencies": {
+    "use-context-selector": "^1.1.3"
   }
 }
