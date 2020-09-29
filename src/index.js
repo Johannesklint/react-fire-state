@@ -1,7 +1,7 @@
 import React, { useState, createElement, useCallback, useMemo } from 'react'
 import { createContext, useContextSelector } from 'use-context-selector'
 
-let idCount = 0
+let keyCount = 0
 
 const ActionsContext = createContext(null)
 
@@ -11,54 +11,53 @@ export function Provider({ children }) {
   const actions = useMemo(
     () => ({
       read: (val) => {
-        const initRender = !state.get(val.id)
-        if (initRender) {
+        const isInitRender = !state.get(val.id)
+        if (isInitRender) {
           state.set(val.id, val.initState)
           return state.get(val.id)
         }
         return state.get(val.id)
       },
-      write: (val, id) => {
-        setState((prev) => new Map(prev.set(id, val)))
+      write: (newStateValue, id) => {
+        setState((prev) => new Map(prev.set(id, newStateValue)))
       },
     }),
     [state]
   )
+
   return createElement(
     ActionsContext.Provider,
-    { value: { actions, state } },
+    { value: { actions } },
     children
   )
 }
 
 export function fire(initState) {
-  return { id: ++idCount, initState }
+  return { id: ++keyCount, initState }
 }
 
 export function useFire(fire) {
   const actionsContext = useContextSelector(
     ActionsContext,
     useCallback(
-      ({ actions, state }) => {
-        const prevStateOrInitState = actions.read(fire)
-        return { prevStateOrInitState, ...actions, ...state, id: fire.id }
+      ({ actions }) => {
+        const state = actions.read(fire)
+        return { state, ...actions, id: fire.id }
       },
       [fire]
     )
   )
 
   const setFire = useCallback(
-    (updateState) => {
-      if (typeof updateState === 'function') {
-        return actionsContext.write(
-          updateState(actionsContext.prevStateOrInitState),
-          actionsContext.id
-        )
+    (newStateValue) => {
+      if (typeof newStateValue === 'function') {
+        const prevState = actionsContext.state
+        return actionsContext.write(newStateValue(prevState), actionsContext.id)
       }
-      return actionsContext.write(updateState, actionsContext.id)
+      return actionsContext.write(newStateValue, actionsContext.id)
     },
     [actionsContext]
   )
-  const state = actionsContext.prevStateOrInitState
-  return [state, setFire]
+
+  return [actionsContext.state, setFire]
 }
