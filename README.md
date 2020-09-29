@@ -6,7 +6,7 @@
 
 ## Usage
 
-There is no need to pass an inital store to the `Provider` just add whatever you want with `fire` - it let's you add a new state instance whenver you want.
+There is no need to pass an inital store to the `Provider` just add whatever you want with `fire` - it let's you add a new state instance whenver/wherever you want.
 It works a little bit like [Recoil](https://github.com/facebookexperimental/Recoil) but its not as fancy
 
 ```jsx
@@ -47,15 +47,13 @@ function Reader() {
   )
 }
 
-export default function App() {
+function App() {
   return (
-    <div>
-      <Provider>
-        <FirstCounter />
-        <SecondCounter />
-        <Reader />
-      </Provider>
-    </div>
+    <Provider>
+      <FirstCounter />
+      <SecondCounter />
+      <Reader />
+    </Provider>
   )
 }
 ```
