@@ -1,7 +1,7 @@
 import React, { useState, createElement, useCallback, useMemo } from 'react'
 import { createContext, useContextSelector } from 'use-context-selector'
 
-let idCount = -1
+let idCount = 0
 
 const ActionsContext = createContext(null)
 
@@ -21,8 +21,10 @@ export function Provider({ children }) {
         }
         return state.get(value.id)
       },
-      write: (newStateValue, id) => {
-        setState((prev) => new Map(prev.set(id, newStateValue)))
+      write: (newStateValue, id, name) => {
+        setState(
+          (prev) => new Map(prev.set(id, { value: newStateValue, name }))
+        )
       },
     }),
     [state]
@@ -35,8 +37,8 @@ export function Provider({ children }) {
   )
 }
 
-function convertNumberToLetter(s) {
-  return String.fromCharCode(97 + s)
+function convertNumberToLetter(str) {
+  return String.fromCharCode(96 + str)
 }
 
 export function fire(initState, name) {
@@ -57,11 +59,17 @@ export function useFire(fire) {
 
   const setFire = useCallback(
     (newStateValue) => {
+      const { name } = actionsContext.state
       if (typeof newStateValue === 'function') {
         const prevState = actionsContext.state
-        return actionsContext.write(newStateValue(prevState), actionsContext.id)
+        return actionsContext.write(
+          newStateValue(prevState),
+          actionsContext.id,
+          name
+        )
       }
-      return actionsContext.write(newStateValue, actionsContext.id)
+
+      return actionsContext.write(newStateValue, actionsContext.id, name)
     },
     [actionsContext]
   )
