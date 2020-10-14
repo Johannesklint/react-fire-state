@@ -81,9 +81,9 @@ function NamedFireComponentOne() {
 
   return (
     <div>
-      <h1>First counter</h1>
+      <h1>NamedFireComponentOne</h1>
       {count.value}
-      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
+      <button onClick={() => setCount('something else')}>click me!</button>
     </div>
   )
 }
@@ -92,27 +92,31 @@ function NamedFireComponentOne() {
 const namedFireTwo = fire('goodbye', 'goodbyeName')
 function NamedFireComponentTwo() {
   const [count, setCount] = useFire(namedFireTwo)
-
   return (
     <div>
-      <h1>First counter</h1>
+      <h1>NamedFireComponentTwo</h1>
       {count.value}
-      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
+      <button
+        onClick={() =>
+          setCount((prev) => prev.value + ' something with previous value')
+        }
+      >
+        click me!
+      </button>
     </div>
   )
 }
 
 function ReadAllStores() {
   const allFires = useAllFires()
-  // below you can retrive the fire by name
+  // below you can retrieve all fires by name
   return (
     <div>
-      <p> firstCount: {allFires.helloName}</p>
-      <p>secondCount: {allFires.goodbyeName}</p>
+      <p>{allFires.helloName}</p>
+      <p>{allFires.goodbyeName}</p>
     </div>
   )
 }
-
 function App() {
   return (
     <Provider>
