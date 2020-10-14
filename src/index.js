@@ -75,7 +75,7 @@ function convertMapToObject(map) {
   }, {})
 }
 
-function useAllFires() {
+export function useAllFires() {
   return useContextSelector(
     ActionsContext,
     useCallback(({ state }) => {

@@ -113,7 +113,7 @@ function ReadAllStores() {
   )
 }
 
-export default function App() {
+function App() {
   return (
     <Provider>
       <NamedFireComponentOne />
