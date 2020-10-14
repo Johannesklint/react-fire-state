@@ -1,7 +1,7 @@
 import React, { useState, createElement, useCallback, useMemo } from 'react'
 import { createContext, useContextSelector } from 'use-context-selector'
 
-let keyCount = 0
+let idCount = -1
 
 const ActionsContext = createContext(null)
 
@@ -10,13 +10,16 @@ export function Provider({ children }) {
   const [state, setState] = useState(initState)
   const actions = useMemo(
     () => ({
-      read: (val) => {
-        const isInitRender = !state.get(val.id)
+      read: (value) => {
+        const isInitRender = !state.get(value.id)
         if (isInitRender) {
-          state.set(val.id, val.initState)
-          return state.get(val.id)
+          const name = value.name ? value.name : convertNumberToLetter(value.id)
+          const newState = { value: value.initState, name }
+          state.set(value.id, newState)
+
+          return state.get(value.id)
         }
-        return state.get(val.id)
+        return state.get(value.id)
       },
       write: (newStateValue, id) => {
         setState((prev) => new Map(prev.set(id, newStateValue)))
@@ -27,13 +30,17 @@ export function Provider({ children }) {
 
   return createElement(
     ActionsContext.Provider,
-    { value: { actions } },
+    { value: { actions, state } },
     children
   )
 }
 
-export function fire(initState) {
-  return { id: ++keyCount, initState }
+function convertNumberToLetter(s) {
+  return String.fromCharCode(97 + s)
+}
+
+export function fire(initState, name) {
+  return { id: ++idCount, initState, name }
 }
 
 export function useFire(fire) {
@@ -42,7 +49,7 @@ export function useFire(fire) {
     useCallback(
       ({ actions }) => {
         const state = actions.read(fire)
-        return { state, ...actions, id: fire.id }
+        return { state, ...actions, ...fire }
       },
       [fire]
     )
@@ -60,4 +67,19 @@ export function useFire(fire) {
   )
 
   return [actionsContext.state, setFire]
+}
+
+function convertMapToObject(map) {
+  return Array.from(map).reduce((acc, [key, value]) => {
+    return { ...acc, [value.name]: value.value }
+  }, {})
+}
+
+function useAllFires() {
+  return useContextSelector(
+    ActionsContext,
+    useCallback(({ state }) => {
+      return convertMapToObject(state)
+    }, [])
+  )
 }
