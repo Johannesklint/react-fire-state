@@ -120,6 +120,3 @@ export function useAllFires() {
     }, [])
   ) as any
 }
-const allFires = useAllFires()
-
-console.log('allFires.hell', allFires.hell)
