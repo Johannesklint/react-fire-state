@@ -1,7 +1,7 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { Provider, useFire, useAllFires, fire } from '../'
+import { Provider, useFire, useAllFires, fire } from '..'
 
 test('reading and writing to state', () => {
   const store = fire(0)
@@ -13,7 +13,7 @@ test('reading and writing to state', () => {
   function Writer() {
     const [_, setState] = useFire(store)
     return (
-      <button onClick={() => setState((prev) => prev.value + 1)}>
+      <button onClick={() => setState((prev: any) => prev.value + 1)}>
         increment
       </button>
     )
@@ -43,7 +43,9 @@ test('with names', () => {
     const [_, setState] = useFire(store)
     const allFires = useAllFires()
     return (
-      <button onClick={() => setState((prev) => prev.value + ' and then some')}>
+      <button
+        onClick={() => setState((prev: any) => prev.value + ' and then some')}
+      >
         {allFires.value}
       </button>
     )

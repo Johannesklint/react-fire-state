@@ -19,8 +19,8 @@ function FirstCounter() {
   return (
     <div>
       <h1>First counter</h1>
-      {count}
-      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
+      {count.value}
+      <button onClick={() => setCount((prev) => prev.value + 1)}>increment</button>
     </div>
   )
 }
@@ -32,8 +32,8 @@ function SecondCounter() {
   return (
     <div>
       <h1>Second counter</h1>
-      {count}
-      <button onClick={() => setCount((prev) => prev + 1)}>increment</button>
+      {count.value}
+      <button onClick={() => setCount((prev) => prev.value - 1)}>decrement</button>
     </div>
   )
 }
@@ -44,8 +44,8 @@ function Reader() {
 
   return (
     <div>
-      <p>{firstCount}</p>
-      <p>{secondCount}</p>
+      <p>{firstCount.value}</p>
+      <p>{secondCount.value}</p>
     </div>
   )
 }

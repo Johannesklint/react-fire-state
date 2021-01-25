@@ -1,16 +1,34 @@
-import React, { useState, createElement, useCallback, useMemo } from 'react'
+import * as React from 'react'
 import { createContext, useContextSelector } from 'use-context-selector'
 
 let idCount = 0
 
-const ActionsContext = createContext(null)
+type Actions = {
+  write: Function
+  read: Function
+}
 
-export function Provider({ children }) {
+type State = Map<string, { id: number; name: string; value: string }>
+
+type Context = {
+  actions: Actions
+  state: State
+}
+
+const ActionsContext = createContext<Context>({
+  actions: {
+    write: () => {},
+    read: () => {},
+  },
+  state: new Map(),
+})
+
+export function Provider({ children }: { children: React.ReactNode }) {
   const initState = new Map()
-  const [state, setState] = useState(initState)
-  const actions = useMemo(
+  const [state, setState] = React.useState(initState)
+  const actions = React.useMemo(
     () => ({
-      read: (value) => {
+      read: (value: { id: number; name: string; initState: unknown }) => {
         const isInitRender = !state.get(value.id)
         if (isInitRender) {
           const name = value.name ? value.name : convertNumberToLetter(value.id)
@@ -21,35 +39,46 @@ export function Provider({ children }) {
         }
         return state.get(value.id)
       },
-      write: (newStateValue, id, name) => {
-        setState(
-          (prev) => new Map(prev.set(id, { value: newStateValue, name }))
-        )
+      write: (newStateValue: unknown, id: number, name: string) => {
+        setState((prev) => {
+          return new Map(
+            prev.set(id, {
+              value: newStateValue,
+              name,
+            })
+          )
+        })
       },
     }),
     [state]
   )
 
-  return createElement(
+  return React.createElement(
     ActionsContext.Provider,
     { value: { actions, state } },
     children
   )
 }
 
-function convertNumberToLetter(str) {
+function convertNumberToLetter(str: number) {
   return String.fromCharCode(96 + str)
 }
 
-export function fire(initState, name) {
+export function fire(initState: unknown, name: string = '') {
   return { id: ++idCount, initState, name }
 }
 
-export function useFire(fire) {
+interface IFire {
+  id: number
+  initState: unknown
+  name: string
+}
+
+export function useFire(fire: IFire) {
   const actionsContext = useContextSelector(
     ActionsContext,
-    useCallback(
-      ({ actions }) => {
+    React.useCallback(
+      ({ actions }: Context) => {
         const state = actions.read(fire)
         return { state, ...actions, ...fire }
       },
@@ -57,8 +86,8 @@ export function useFire(fire) {
     )
   )
 
-  const setFire = useCallback(
-    (newStateValue) => {
+  const setFire = React.useCallback(
+    (newStateValue: Function | unknown) => {
       const { name } = actionsContext.state
       if (typeof newStateValue === 'function') {
         const prevState = actionsContext.state
@@ -77,8 +106,8 @@ export function useFire(fire) {
   return [actionsContext.state, setFire]
 }
 
-function convertMapToObject(map) {
-  return Array.from(map).reduce((acc, [key, value]) => {
+function convertMapToObject(map: Map<string, { name: string; value: string }>) {
+  return Array.from(map).reduce((acc, [_, value]) => {
     return { ...acc, [value.name]: value.value }
   }, {})
 }
@@ -86,8 +115,11 @@ function convertMapToObject(map) {
 export function useAllFires() {
   return useContextSelector(
     ActionsContext,
-    useCallback(({ state }) => {
+    React.useCallback(({ state }: Context) => {
       return convertMapToObject(state)
     }, [])
-  )
+  ) as any
 }
+const allFires = useAllFires()
+
+console.log('allFires.hell', allFires.hell)
