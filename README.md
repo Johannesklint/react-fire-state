@@ -78,7 +78,7 @@ import { fire, useFire, useAllFires, Provider } from 'react-state-fire'
 const namedFireOne = fire('hello', 'helloName')
 function NamedFireComponentOne() {
   const [count, setCount] = useFire(namedFireOne)
-
+  // the name of the fire is also available count.name
   return (
     <div>
       <h1>NamedFireComponentOne</h1>
